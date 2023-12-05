@@ -11,6 +11,7 @@ int main() {
     int num_cards = 0;
     vector<int> num_matches;
 
+    // Parsing and Part 1 Logic
     string card;
     while (getline(cin, card)) {
         istringstream sin(card);
@@ -55,23 +56,19 @@ int main() {
         num_matches.push_back(matches);
     }
 
+    // Part 2 Logic
     vector<int> total_num_cards(num_cards, 1);
     for (int i = 0; i < num_matches.size(); i++) {
         for (int j = i + 1; j < i + num_matches[i] + 1; j++) {
             if (j >= total_num_cards.size()) break;
-            total_num_cards[j] += 1;
+            total_num_cards[j] += total_num_cards[i];;
         }
     }
-
-    for (int i : total_num_cards) {
-        cout << i << endl;
-    }
-
     int total_cards = accumulate(total_num_cards.begin(), total_num_cards.end(), 0);
 
+    // Output
     cout << "Part 1" << endl;
     cout << "Sum of all card points is: " << sum << endl;
-
     cout << "Part 2" << endl;
     cout << "Total number of cards is: " << total_cards << endl;
 }

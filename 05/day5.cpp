@@ -16,6 +16,7 @@ struct Range {
 void transform_ranges(vector<Range> &seeds, const vector<pair<Range, Range>> &map) {
     vector<Range> transformed;
     for (auto seed : seeds) {
+        int prev_size = transformed.size();
         for (auto range : map) {
             Range new_range = seed;
             if (seed.start > range.first.end || seed.end < range.first.start) continue;
@@ -38,6 +39,10 @@ void transform_ranges(vector<Range> &seeds, const vector<pair<Range, Range>> &ma
             }
 
             transformed.push_back(new_range);
+        }
+        
+        if (prev_size == transformed.size()) {
+            transformed.push_back(seed);
         }
     }
 
@@ -85,7 +90,7 @@ int main() {
             sin >> ignore; // Ignore 'seeds:'
             uint64_t seed;
             while (sin >> seed) {
-                seeds.push_back(Range(seed, seed));
+                seeds.push_back(Range(seed, 1));
             }
 
             // Parse seed ranges for part 2.
@@ -110,11 +115,6 @@ int main() {
         transform_ranges(seeds, map);
     }
     condense_ranges(seeds);
-
-    for (auto seed : seeds) {
-        cout << "[" << seed.start << ", " << seed.end << "], ";
-    }
-    cout << endl;
     
     // Part 2
     for (auto map : maps) {
@@ -122,8 +122,8 @@ int main() {
     }
     condense_ranges(seed_ranges);
 
-    for (auto seed : seed_ranges) {
-        cout << "[" << seed.start << ", " << seed.end << "], ";
-    }
-    cout << endl;
+    cout << "Part 1" << endl;
+    cout << "Lowest location number is: " << seeds[0].start << endl;
+    cout << "Part 2" << endl;
+    cout << "Lowest location number is: " << seed_ranges[0].start << endl;
 }

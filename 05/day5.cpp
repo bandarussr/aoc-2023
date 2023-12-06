@@ -17,10 +17,13 @@ void transform_ranges(vector<Range> &seeds, const vector<pair<Range, Range>> &ma
     vector<Range> transformed;
     for (auto seed : seeds) {
         int prev_size = transformed.size();
+
         for (auto range : map) {
             Range new_range = seed;
+            // No overlap with map range.
             if (seed.start > range.first.end || seed.end < range.first.start) continue;
 
+            // Handle start value.
             if (seed.start >= range.first.start) {
                 new_range.start = range.second.start + (seed.start - range.first.start);
             }
@@ -29,7 +32,7 @@ void transform_ranges(vector<Range> &seeds, const vector<pair<Range, Range>> &ma
                 transformed.push_back(Range(seed.start, range.first.start - seed.start));
             }
 
-
+            // Handle end value.
             if (seed.end <= range.first.end) {
                 new_range.end = range.second.start + (seed.end - range.first.start);
             }
@@ -41,6 +44,7 @@ void transform_ranges(vector<Range> &seeds, const vector<pair<Range, Range>> &ma
             transformed.push_back(new_range);
         }
         
+        // If range was not transformed, put it back as is.
         if (prev_size == transformed.size()) {
             transformed.push_back(seed);
         }
@@ -107,19 +111,15 @@ int main() {
         // Store maps.
         uint64_t src, dst, size;
         sin >> dst >> src >> size;
-        maps[parsing_section].push_back(pair(Range(src, size), Range(dst, size)));
+        maps[parsing_section].push_back(make_pair(Range(src, size), Range(dst, size)));
     }
 
-    // Part 1
+    // Part 1 & 2
     for (auto map : maps) {
         transform_ranges(seeds, map);
-    }
-    condense_ranges(seeds);
-    
-    // Part 2
-    for (auto map : maps) {
         transform_ranges(seed_ranges, map);
     }
+    condense_ranges(seeds);
     condense_ranges(seed_ranges);
 
     cout << "Part 1" << endl;

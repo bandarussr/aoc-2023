@@ -6,6 +6,12 @@
 #include <vector>
 using namespace std;
 
+/**
+ * The ranges added using lines marked with A are not being checked b/c of issue with logic, but
+ * for whatever reason, if I comment them, I get the correct answer for my input, but if I uncomment
+ * them I get the correct answer for the example.
+*/
+
 struct Range {
     uint64_t start;
     uint64_t end;
@@ -29,7 +35,7 @@ void transform_ranges(vector<Range> &seeds, const vector<pair<Range, Range>> &ma
             }
             else {
                 new_range.start = range.second.start;
-                transformed.push_back(Range(seed.start, range.first.start - seed.start));
+                transformed.push_back(Range(seed.start, range.first.start - seed.start)); // A
             }
 
             // Handle end value.
@@ -38,7 +44,7 @@ void transform_ranges(vector<Range> &seeds, const vector<pair<Range, Range>> &ma
             }
             else {
                 new_range.end = range.second.end;
-                transformed.push_back(Range(range.first.end + 1, seed.end - range.first.end));
+                transformed.push_back(Range(range.first.end + 1, seed.end - range.first.end)); // A
             }
 
             transformed.push_back(new_range);
